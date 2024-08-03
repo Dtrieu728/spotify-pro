@@ -1,0 +1,9 @@
+.Hero{
+    display: block;
+    background: rgb(2,0,36);
+    background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(187,10,185,1) 35%); 
+    height: 100%;
+    width: 100%;
+    padding: 20% 20%;
+    color: white;
+}
