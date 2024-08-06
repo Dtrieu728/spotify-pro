@@ -11,7 +11,7 @@ interface SpotifyAuthParams {
 
 const CLIENT_ID = import.meta.env.VITE_SPOTIFY_ID; // Replace with your Spotify Client ID
 const SPOTIFY_AUTHORIZE_ENDPOINT = "https://accounts.spotify.com/authorize";
-const REDIRECT_URL_AFTER_LOGIN = "http://localhost:5173/play-list"; // Replace with your redirect URI
+const REDIRECT_URL_AFTER_LOGIN = "http://localhost:5173/spotify-pro/play-list"; // Replace with your redirect URI
 const SPACE_DELIMITER = "%20";
 const SCOPES = [
   "user-read-currently-playing",

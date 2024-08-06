@@ -4,7 +4,7 @@ import "./spotify.css";
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
-const redirectUri = "http://localhost:5173/signup";
+const redirectUri = "http://localhost:5173/spotify-pro/signup";
 
 interface NowPlaying {
   name: string;
