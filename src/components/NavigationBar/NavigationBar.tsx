@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import './NavigationBar.css'; // Import the CSS file
-import * as ROUTES from "../constants/routes";
+import * as ROUTES from "../../constants/routes";
 function NavigationBar() {
   return (
     <header className='NavigationBar'>
@@ -11,6 +11,9 @@ function NavigationBar() {
           </li>
           <li className='nav-item'>
             <Link to={ROUTES.SIGN_UP}>Profile</Link>
+          </li>
+          <li className='nav-list'>
+            <Link to={ROUTES.PLAY_LIST}>PlayList</Link>
           </li>
         </ul>
       </nav>

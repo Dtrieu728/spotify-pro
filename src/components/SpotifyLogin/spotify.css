@@ -1,0 +1,21 @@
+.spotify {
+    background: rgb(34,193,195);
+    background: linear-gradient(90deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
+    height: 100vh; /* Adjust height to viewport height */
+    width: 100%;
+    display: grid;
+    place-items: center; /* Centers items both horizontally and vertically */
+  }
+  
+  .spotify-content {
+    text-align: center; /* Centers text within the container */
+  }
+  
+  .login {
+    margin: 50px;
+    font-size: 30px;
+    display: block; /* Ensure the link is displayed as a block element if needed */
+    text-decoration: none; /* Remove underline */
+    color: white; /* Change text color if needed */
+  }
+  
