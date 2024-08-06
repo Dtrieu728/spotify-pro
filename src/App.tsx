@@ -1,10 +1,10 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import * as ROUTES from"./constants/routes"
 import "./App.css";
-import NavigationBar from "./components/NavigationBar/NavigationBar";
+import NavigationBar from "./components/NavigationBar/NavigationBar.tsx";
 import Hero from "./components/Hero"; 
-import WebApp from "./components/WebApp/webApp.js";
-import Spotify from "./components/SpotifyLogin/spotify.js";
+import WebApp from "./components/WebApp/webApp.tsx";
+import Spotify from "./components/SpotifyLogin/spotify.tsx";
 
 function App() {
   return (
