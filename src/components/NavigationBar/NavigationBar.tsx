@@ -12,7 +12,7 @@ function NavigationBar() {
           <li className='nav-item'>
             <Link to={ROUTES.SIGN_UP}>Profile</Link>
           </li>
-          <li className='nav-list'>
+          <li className='nav-item'>
             <Link to={ROUTES.PLAY_LIST}>PlayList</Link>
           </li>
         </ul>

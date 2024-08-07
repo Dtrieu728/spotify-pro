@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import "./spotify.css";
-import SpotifyGetUser from './spotifyProfile';
-import SpotifyGetPlaylists from '../WebApp/components/SpotifyGetPlaylists';
+import SpotifyGetUser from '../SpotifyProfile/spotifyProfile';
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
@@ -146,10 +145,10 @@ const Spotify: React.FC = () => {
     }).catch(error => console.error('Error fetching playback state:', error));
   };
 
-  return (
-<div className='spotify'>
-<SpotifyGetUser />
+ return (
+    <div className='spotify'>
       <div className='spotify-content'>
+        <SpotifyGetUser />
         <h1 style={{ margin: "20px" }}><b>Spotify API project site</b></h1>
         {!loggedIn && 
           <a className='login' href='#' onClick={() => redirectToAuthCodeFlow(clientId, redirectUri)}>Login to Spotify</a>
@@ -168,13 +167,12 @@ const Spotify: React.FC = () => {
           </div>
         )}
         {loggedIn && (
-          <button onClick={getNowPlaying} style={{width:'200px'}}>Check Now Playing</button>
+          <div className="center-container">
+            <button onClick={getNowPlaying}>Check Now Playing</button>
+          </div>
         )}
-        <SpotifyGetPlaylists></SpotifyGetPlaylists>
       </div>
-      <div></div>
     </div>
-
   );
 };
 

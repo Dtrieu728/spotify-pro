@@ -1,0 +1,103 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.spotify {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(90deg, rgba(113,34,195,1) 0%, rgba(253,187,45,1) 100%);
+  color: #fff;
+}
+
+.spotify-content {
+  max-width: 900px;
+  width: 90%;
+  padding: 30px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.spotify-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.now-playing {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.now-playing img {
+  margin-right: 20px;
+  border-radius: 50%;
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.spotify-display img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 20px;
+  border-radius: 50%;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.login {
+  display: inline-block;
+  padding: 12px 25px;
+  background-color: #1db954;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+  margin: 20px 0;
+  font-weight: bold;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.login:hover {
+  background-color: #1ed760;
+  transform: translateY(-2px);
+}
+
+.center-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.center-container button {
+  width: 200px;
+  margin: 20px;
+  padding: 12px 25px;
+  background-color: #1db954; 
+  color: white; 
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+  font-weight: bold;
+}
+
+.center-container button:hover {
+  background-color: #1ed760; 
+  transform: translateY(-2px);
+}
+
+.center-container button:disabled {
+  background-color: gray; 
+  cursor: not-allowed;
+}

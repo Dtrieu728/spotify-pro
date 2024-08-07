@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import PlaylistList from "./Playlist";
+import SearchBar from "./Searchbar";
+import Pagination from "./Pagination";
+import "./SpotifyGetPlaylist.css";
 
-// Define types for the API response and state
 interface PlaylistItem {
   id: string;
   name: string;
@@ -9,6 +12,7 @@ interface PlaylistItem {
 
 interface PlaylistsResponse {
   items: PlaylistItem[];
+  next?: string;
 }
 
 const PLAYLISTS_ENDPOINT = "https://api.spotify.com/v1/me/playlists";
@@ -18,25 +22,31 @@ const SpotifyGetPlaylists: React.FC = () => {
   const [data, setData] = useState<PlaylistsResponse | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState<number>(0);
+  const [hasMore, setHasMore] = useState<boolean>(true);
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken");
     if (storedToken) {
       setToken(storedToken);
+      fetchPlaylists();
     }
-  }, []);
+  }, [page]);
 
-  const handleGetPlaylists = async () => {
+  const fetchPlaylists = async () => {
     if (token) {
       setLoading(true);
       setError(null);
       try {
-        const response = await axios.get<PlaylistsResponse>(PLAYLISTS_ENDPOINT, {
+        const url = page === 0 ? PLAYLISTS_ENDPOINT : data?.next || PLAYLISTS_ENDPOINT;
+        const response = await axios.get<PlaylistsResponse>(url, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
         setData(response.data);
+        setHasMore(!!response.data.next);
       } catch (error) {
         setError("Failed to fetch playlists. Please try again.");
         console.error(error);
@@ -46,22 +56,25 @@ const SpotifyGetPlaylists: React.FC = () => {
     }
   };
 
+  const filteredPlaylists = data?.items.filter(item =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <>
-      <button onClick={handleGetPlaylists} disabled={loading} >
+    <div className="playlists-container">
+      <h2>Your Playlists</h2>
+      <SearchBar searchTerm={searchTerm} onSearchChange={setSearchTerm} />
+      <button onClick={fetchPlaylists} disabled={loading}>
         {loading ? "Loading..." : "Get Playlists"}
       </button>
       {error && <p>{error}</p>}
-      {data?.items.length ? (
-        <ul>
-          {data.items.map((item) => (
-            <li key={item.id}>{item.name}</li>
-          ))}
-        </ul>
+      {filteredPlaylists?.length ? (
+        <PlaylistList items={filteredPlaylists} />
       ) : (
         !loading && <p>No playlists found.</p>
       )}
-    </>
+      <Pagination hasMore={hasMore} loading={loading} onLoadMore={() => setPage(prevPage => prevPage + 1)} />
+    </div>
   );
 };
 

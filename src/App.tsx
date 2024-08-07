@@ -4,7 +4,7 @@ import "./App.css";
 import NavigationBar from "./components/NavigationBar/NavigationBar.tsx";
 import Hero from "./components/Hero"; 
 import WebApp from "./components/WebApp/webApp.tsx";
-import Spotify from "./components/SpotifyLogin/spotify.tsx";
+import Spotify from "./components/SpotifyLogin/Spotify/spotify.tsx";
 
 function App() {
   return (
