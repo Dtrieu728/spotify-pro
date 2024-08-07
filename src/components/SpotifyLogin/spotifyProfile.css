@@ -1,0 +1,34 @@
+.profile-container {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    max-width: 900px;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin: 20px 0;
+  }
+  
+  .profile-info {
+    margin-left: 20px;
+  }
+  
+  button {
+    padding: 10px 20px;
+    background-color: #1db954;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  button:hover {
+    background-color: #1ed760;
+  }
+  
+  button:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+  }
+  

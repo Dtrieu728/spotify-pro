@@ -48,7 +48,7 @@ const SpotifyGetPlaylists: React.FC = () => {
 
   return (
     <>
-      <button onClick={handleGetPlaylists} disabled={loading}>
+      <button onClick={handleGetPlaylists} disabled={loading} >
         {loading ? "Loading..." : "Get Playlists"}
       </button>
       {error && <p>{error}</p>}

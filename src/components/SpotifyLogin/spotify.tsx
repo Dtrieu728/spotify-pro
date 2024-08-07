@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import "./spotify.css";
+import SpotifyGetUser from './spotifyProfile';
+import SpotifyGetPlaylists from '../WebApp/components/SpotifyGetPlaylists';
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
@@ -11,6 +13,7 @@ interface NowPlaying {
   albumArt: string;
   artist: string;
   popular: number;
+  genres: string [];
 }
 
 interface CurrentUsersProfileResponse {
@@ -26,7 +29,7 @@ interface PlaybackState {
     album: {
       images: { url: string }[];
     };
-    artists: { name: string }[];
+    artists: { id: string; name: string }[];
     popularity: number;
   } | null;
 }
@@ -60,7 +63,7 @@ const redirectToAuthCodeFlow = async (clientId: string, redirectUri: string) => 
   localStorage.setItem('code_verifier', codeVerifier);
 
   const state = 'some_random_state'; // Generate a random state for CSRF protection
-  const scope = 'user-read-playback-state user-read-currently-playing';
+  const scope = 'user-read-playback-state user-read-currently-playing playlist-read-private';
 
   const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
   window.location.href = authUrl;
@@ -124,12 +127,18 @@ const Spotify: React.FC = () => {
     spotifyApi.getMyCurrentPlaybackState().then((response: PlaybackState) => {
       console.log('Playback State:', response);
       if (response.item) {
-        setNowPlaying({
-          name: response.item.name,
-          albumArt: response.item.album.images[0].url,
-          artist: response.item.artists[0].name,
-          popular: response.item.popularity
-        });
+        const track = response.item;
+        const artistId = track.artists[0].id;
+
+        spotifyApi.getArtist(artistId).then(artist => {
+          setNowPlaying({
+            name: track.name,
+            albumArt: track.album.images[0].url,
+            artist: track.artists[0].name,
+            popular: track.popularity,
+            genres: artist.genres
+          });
+        }).catch(error => console.error('Error fetching artist info:', error));
       } else {
         setNowPlaying(null);
         console.log('No track is currently playing');
@@ -138,24 +147,34 @@ const Spotify: React.FC = () => {
   };
 
   return (
-    <div className='spotify'>
+<div className='spotify'>
+<SpotifyGetUser />
       <div className='spotify-content'>
-        <h1 style={{margin:"20px"}}><b>Spotify API project site</b></h1>
-        {!loggedIn && <a className='login' href='#' onClick={() => redirectToAuthCodeFlow(clientId, redirectUri)}>Login to Spotify</a>}
-        {loggedIn && nowPlaying && (
-          <>
-            <div style={{fontSize:"20px"}}>Now Playing: {nowPlaying.artist}, {nowPlaying.name}</div>
-            <div>Popularity: {nowPlaying.popular}</div>
-            <div>
-              <img src={nowPlaying.albumArt} style={{ height: 250}} alt="Album Art" />
-            </div>
-          </>
+        <h1 style={{ margin: "20px" }}><b>Spotify API project site</b></h1>
+        {!loggedIn && 
+          <a className='login' href='#' onClick={() => redirectToAuthCodeFlow(clientId, redirectUri)}>Login to Spotify</a>
+        }
+        {loggedIn && (
+          <div className='spotify-info'>
+            {nowPlaying && (
+              <div className='now-playing'>
+                <img src={nowPlaying.albumArt} alt="Album Art" style={{ width: '300px', height: '300px', marginRight: '20px' }} />
+                <div>
+                  <div>Now Playing: {nowPlaying.artist} - {nowPlaying.name}</div>
+                  <div>Genres: {nowPlaying.genres.join(' , ')}</div>
+                </div>
+              </div>
+            )}
+          </div>
         )}
         {loggedIn && (
-          <button onClick={getNowPlaying}>Check Now Playing</button>
+          <button onClick={getNowPlaying} style={{width:'200px'}}>Check Now Playing</button>
         )}
+        <SpotifyGetPlaylists></SpotifyGetPlaylists>
       </div>
+      <div></div>
     </div>
+
   );
 };
 

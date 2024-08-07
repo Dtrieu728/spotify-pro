@@ -1,21 +1,63 @@
 .spotify {
-    background: rgb(34,193,195);
-    background: linear-gradient(90deg, rgba(34,193,195,1) 0%, rgba(253,187,45,1) 100%);
-    height: 100vh; /* Adjust height to viewport height */
-    width: 100%;
-    display: grid;
-    place-items: center; /* Centers items both horizontally and vertically */
-  }
-  
-  .spotify-content {
-    text-align: center; /* Centers text within the container */
-  }
-  
-  .login {
-    margin: 50px;
-    font-size: 30px;
-    display: block; /* Ensure the link is displayed as a block element if needed */
-    text-decoration: none; /* Remove underline */
-    color: white; /* Change text color if needed */
-  }
-  
+  display: grid;
+  justify-content: left;
+  align-items: center;
+  min-height: 100vh;
+  background: rgb(113,34,195);
+  background: linear-gradient(90deg, rgba(113,34,195,1) 0%, rgba(253,187,45,1) 100%); 
+}
+
+.spotify-content {
+  width: 900px;
+  padding: 20px;
+  border-radius: 8px;
+  border:1px solid #ddd;
+
+}
+
+.spotify-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.now-playing {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.now-playing img {
+  margin-right: 20px;
+}
+
+.spotify-display img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.login {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #1db954;
+  color: white;
+  border-radius: 25px;
+  text-decoration: none;
+  margin: 20px 0;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #1db954;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #1ed760;
+}

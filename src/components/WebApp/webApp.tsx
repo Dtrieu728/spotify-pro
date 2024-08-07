@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import SpotifyGetPlaylists from "./components/SpotifyGetPlaylists";
 import "./webApp.css";
+import SpotifyGetUser from "../SpotifyLogin/spotifyProfile";
 
 // Define types for the Spotify auth response
 interface SpotifyAuthParams {
@@ -58,7 +59,8 @@ const WebApp: React.FC = () => {
     <div className="container">
       <h1>Spotify Web App</h1>
       <button onClick={handleLogin}>Login to Spotify</button>
-      <SpotifyGetPlaylists />
+      <SpotifyGetUser></SpotifyGetUser>
+      <SpotifyGetPlaylists></SpotifyGetPlaylists>
     </div>
   );
 };
