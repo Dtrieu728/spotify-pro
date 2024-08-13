@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Spotify/spotify.css";
 import "../../WebApp/components/SpotifyGetPlaylist.css";
-import "./TopArtist.css"
+import "./TopArtist.css";
 
 interface Artist {
   id: string;
