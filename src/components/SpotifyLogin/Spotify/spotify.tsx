@@ -104,6 +104,10 @@ const getAccessToken = async (
   });
 
   const data = await response.json();
+
+  if (data.access_token) {
+    localStorage.setItem("spotify_access_token", data.access_token);
+  }
   return data.access_token;
 };
 
@@ -116,6 +120,9 @@ const Spotify: React.FC = () => {
 
   useEffect(() => {
     const storedToken = localStorage.getItem("spotify_access_token");
+    const params = getToken();
+    const code = params.code;
+
     if (storedToken) {
       setToken(storedToken);
       spotifyApi.setAccessToken(storedToken);
@@ -126,36 +133,28 @@ const Spotify: React.FC = () => {
           setLoggedIn(true);
         })
         .catch((error) => console.error("Error fetching user info:", error));
+    } else if (code) {
+      getAccessToken(clientId, code, redirectUri)
+        .then((newToken) => {
+          if (newToken) {
+            setToken(newToken);
+            spotifyApi.setAccessToken(newToken);
+            spotifyApi
+              .getMe()
+              .then((user: CurrentUsersProfileResponse) => {
+                console.log("User Info:", user);
+                setLoggedIn(true);
+              })
+              .catch((error) =>
+                console.error("Error fetching user info:", error)
+              );
+          }
+        })
+        .catch((error) => console.error("Error getting access token:", error));
     } else {
-      const params = getToken();
-      const code = params.code;
-
-      if (code) {
-        getAccessToken(clientId, code, redirectUri)
-          .then((newToken) => {
-            if (newToken) {
-              setToken(newToken);
-              localStorage.setItem("spotify_access_token", newToken);
-              spotifyApi.setAccessToken(newToken);
-              spotifyApi
-                .getMe()
-                .then((user: CurrentUsersProfileResponse) => {
-                  console.log("User Info:", user);
-                  setLoggedIn(true);
-                })
-                .catch((error) =>
-                  console.error("Error fetching user info:", error)
-                );
-            }
-          })
-          .catch((error) =>
-            console.error("Error getting access token:", error)
-          );
-      } else {
-        if (!localStorage.getItem("redirected")) {
-          localStorage.setItem("redirected", "true");
-          redirectToAuthCodeFlow(clientId, redirectUri);
-        }
+      if (!localStorage.getItem("redirected")) {
+        localStorage.setItem("redirected", "true");
+        redirectToAuthCodeFlow(clientId, redirectUri);
       }
     }
   }, [setToken]);
@@ -200,7 +199,6 @@ const Spotify: React.FC = () => {
     <div className="spotify">
       <div className="spotify-content">
         <SpotifyGetUser />
-
         <div className="toggle-buttons">
           <button onClick={() => setShowTopArtists(!showTopArtists)}>
             {showTopArtists ? "Hide Top Artists" : "Show Top Artists"}
