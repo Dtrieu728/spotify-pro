@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Spotify/spotify.css";
 import "../../WebApp/components/SpotifyGetPlaylist.css";
+import "./TopArtist.css"
 
 interface Artist {
   id: string;
@@ -22,7 +23,7 @@ const SpotifyTopArtists: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const artistsPerPage = 5;
+  const artistsPerPage = 10;
 
   useEffect(() => {
     const storedToken = localStorage.getItem('spotify_access_token');
