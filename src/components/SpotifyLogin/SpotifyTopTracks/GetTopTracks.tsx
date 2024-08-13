@@ -2,29 +2,29 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "../Spotify/spotify.css";
 import "../../WebApp/components/SpotifyGetPlaylist.css";
-import "./TopArtist.css";
+import "../SpotifyTopArtist/TopArtist.css";
 
-interface Artist {
+interface Tracks {
   id: string;
   name: string;
-  images: { url: string }[];
-  followers: { total: number };
+  album: {
+    images: { url: string }[];
+  };
 }
 
-interface TopArtistsResponse {
-  items: Artist[];
+interface TopTracksResponse {
+  items: Tracks[];
 }
 
-const TOP_ARTISTS_ENDPOINT =
-  "https://api.spotify.com/v1/me/top/artists?limit=50";
+const TOP_TRACKS_ENDPOINT = "https://api.spotify.com/v1/me/top/tracks?limit=50";
 
-const SpotifyTopArtists: React.FC = () => {
+const SpotifyTopTracks: React.FC = () => {
   const [token, setToken] = useState<string>("");
-  const [topArtists, setTopArtists] = useState<Artist[]>([]);
+  const [topTracks, setTopTracks] = useState<Tracks[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
-  const artistsPerPage = 10;
+  const tracksPerPage = 10;
 
   useEffect(() => {
     const storedToken = localStorage.getItem("spotify_access_token");
@@ -36,42 +36,42 @@ const SpotifyTopArtists: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    const fetchTopArtists = async () => {
+    const fetchTopTracks = async () => {
       if (token) {
         setLoading(true);
         setError(null);
         try {
-          const response = await axios.get<TopArtistsResponse>(
-            TOP_ARTISTS_ENDPOINT,
+          const response = await axios.get<TopTracksResponse>(
+            TOP_TRACKS_ENDPOINT,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
               },
             }
           );
-          console.log("Top Artists Response:", response.data);
-          setTopArtists(response.data.items);
+          console.log("Top Tracks Response:", response.data);
+          setTopTracks(response.data.items);
         } catch (error) {
-          console.error("Failed to fetch top artists:", error);
-          setError("Failed to fetch top artists. Please try again.");
+          console.error("Failed to fetch top Tracks:", error);
+          setError("Failed to fetch top tracks. Please try again.");
         } finally {
           setLoading(false);
         }
       } else {
-        console.error("No token available for fetching top artists");
+        console.error("No token available for fetching top tracks");
       }
     };
 
-    fetchTopArtists();
+    fetchTopTracks();
   }, [token]);
 
-  const paginatedArtists = topArtists.slice(
-    currentPage * artistsPerPage,
-    (currentPage + 1) * artistsPerPage
+  const paginatedArtists = topTracks.slice(
+    currentPage * tracksPerPage,
+    (currentPage + 1) * tracksPerPage
   );
 
   const handleNext = () => {
-    if ((currentPage + 1) * artistsPerPage < topArtists.length) {
+    if ((currentPage + 1) * tracksPerPage < topTracks.length) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -92,16 +92,15 @@ const SpotifyTopArtists: React.FC = () => {
       <div className="artists-carousel">
         {paginatedArtists.length > 0 && (
           <div className="artists-list">
-            {paginatedArtists.map((artist) => (
-              <div key={artist.id} className="artist-item">
+            {paginatedArtists.map((track) => (
+              <div key={track.id} className="artist-item">
                 <img
-                  src={artist.images[0]?.url}
-                  alt={artist.name}
+                  src={track.album.images[0]?.url}
+                  alt={track.name}
                   className="artist-image"
                 />
                 <div className="artist-info">
-                  <h3>{artist.name}</h3>
-                  <h4>Followers: {artist.followers.total}</h4>
+                  <h3>{track.name}</h3>
                 </div>
               </div>
             ))}
@@ -114,7 +113,7 @@ const SpotifyTopArtists: React.FC = () => {
         </button>
         <button
           onClick={handleNext}
-          disabled={(currentPage + 1) * artistsPerPage >= topArtists.length}
+          disabled={(currentPage + 1) * tracksPerPage >= topTracks.length}
         >
           Next
         </button>
@@ -123,4 +122,4 @@ const SpotifyTopArtists: React.FC = () => {
   );
 };
 
-export default SpotifyTopArtists;
+export default SpotifyTopTracks;
