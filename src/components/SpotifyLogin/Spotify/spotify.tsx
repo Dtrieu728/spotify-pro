@@ -3,6 +3,7 @@ import SpotifyWebApi from 'spotify-web-api-js';
 import "./spotify.css";
 import SpotifyGetUser from '../SpotifyProfile/spotifyProfile';
 import { useSpotify } from './SpotifyContext';
+import SpotifyTopArtists from '../SpotifyTopArtist/TopArtist';
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
@@ -63,7 +64,7 @@ const redirectToAuthCodeFlow = async (clientId: string, redirectUri: string) => 
   localStorage.setItem('code_verifier', codeVerifier);
 
   const state = 'some_random_state'; // Generate a random state for CSRF protection
-  const scope = 'user-read-playback-state user-read-currently-playing playlist-read-private';
+  const scope = 'user-read-playback-state user-read-currently-playing playlist-read-private user-top-read';
 
   const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
   window.location.href = authUrl;
@@ -95,7 +96,6 @@ const Spotify: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    // Check if there's a token in localStorage
     const storedToken = localStorage.getItem('spotify_access_token');
     if (storedToken) {
       setToken(storedToken);
@@ -161,6 +161,7 @@ const Spotify: React.FC = () => {
     <div className='spotify'>
       <div className='spotify-content'>
         <SpotifyGetUser />
+        <SpotifyTopArtists/>
         <h1 style={{ margin: "20px" }}><b>Spotify API project site</b></h1>
         {!loggedIn && 
           <a className='login' href='#' onClick={() => redirectToAuthCodeFlow(clientId, redirectUri)}>Login to Spotify</a>
