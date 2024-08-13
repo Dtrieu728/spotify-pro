@@ -15,7 +15,7 @@ const PlaylistList: React.FC<PlaylistListProps> = ({ items }) => {
     <ul className="playlists-list">
       {items.map((item) => (
         <li key={item.id}>
-          <span>{item.name}</span>
+          <button><span>{item.name}</span></button>
         </li>
       ))}
     </ul>

@@ -27,7 +27,7 @@ const SpotifyGetPlaylists: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
 
   useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken");
+    const storedToken = localStorage.getItem('spotify_access_token');
     if (storedToken) {
       setToken(storedToken);
       fetchPlaylists();

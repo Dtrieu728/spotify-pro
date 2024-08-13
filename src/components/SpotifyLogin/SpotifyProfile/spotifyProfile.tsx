@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import "./spotifyProfile.css";
 import "../Spotify/spotify.css";
+import { useSpotify } from "../Spotify/SpotifyContext";
 
 // Define types for the API response and state
 interface CurrentUsersProfile {
@@ -14,17 +15,10 @@ interface CurrentUsersProfile {
 const PROFILE_ENDPOINT = "https://api.spotify.com/v1/me";
 
 const SpotifyGetUser: React.FC = () => {
-  const [token, setToken] = useState<string>("");
+  const { token } = useSpotify();
   const [profile, setProfile] = useState<CurrentUsersProfile | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken");
-    if (storedToken) {
-      setToken(storedToken);
-    }
-  }, []);
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -34,7 +28,7 @@ const SpotifyGetUser: React.FC = () => {
         try {
           const response = await axios.get<CurrentUsersProfile>(PROFILE_ENDPOINT, {
             headers: {
-              Authorization: `Bearer ${token}`,
+                Authorization: `Bearer ${token}`,
             },
           });
           setProfile(response.data);
@@ -70,5 +64,6 @@ const SpotifyGetUser: React.FC = () => {
     </div>
   );
 };
+
 
 export default SpotifyGetUser;

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import SpotifyWebApi from 'spotify-web-api-js';
 import "./spotify.css";
 import SpotifyGetUser from '../SpotifyProfile/spotifyProfile';
+import { useSpotify } from './SpotifyContext';
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
@@ -89,36 +90,47 @@ const getAccessToken = async (clientId: string, code: string, redirectUri: strin
 }
 
 const Spotify: React.FC = () => {
-  const [spotifyToken, setSpotifyToken] = useState<string>("");
+  const { token, setToken } = useSpotify();
   const [nowPlaying, setNowPlaying] = useState<NowPlaying | null>(null);
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
   useEffect(() => {
-    const params = getToken();
-    const code = params.code;
-
-    if (!code) {
-      // Check if the user has been redirected for authentication
-      if (!localStorage.getItem('redirected')) {
-        localStorage.setItem('redirected', 'true');
-        redirectToAuthCodeFlow(clientId, redirectUri);
-      }
+    // Check if there's a token in localStorage
+    const storedToken = localStorage.getItem('spotify_access_token');
+    if (storedToken) {
+      setToken(storedToken);
+      spotifyApi.setAccessToken(storedToken);
+      spotifyApi.getMe().then((user: CurrentUsersProfileResponse) => {
+        console.log('User Info:', user);
+        setLoggedIn(true);
+      }).catch(error => console.error('Error fetching user info:', error));
     } else {
-      getAccessToken(clientId, code, redirectUri).then((token) => {
-        if (token) {
-          setSpotifyToken(token);
-          spotifyApi.setAccessToken(token);
-          spotifyApi.getMe().then((user: CurrentUsersProfileResponse) => {
-            console.log('User Info:', user);
-            setLoggedIn(true);
-          }).catch(error => console.error('Error fetching user info:', error));
+      const params = getToken();
+      const code = params.code;
+
+      if (code) {
+        getAccessToken(clientId, code, redirectUri).then((newToken) => {
+          if (newToken) {
+            setToken(newToken);
+            localStorage.setItem('spotify_access_token', newToken);
+            spotifyApi.setAccessToken(newToken);
+            spotifyApi.getMe().then((user: CurrentUsersProfileResponse) => {
+              console.log('User Info:', user);
+              setLoggedIn(true);
+            }).catch(error => console.error('Error fetching user info:', error));
+          }
+        }).catch(error => console.error('Error getting access token:', error));
+      } else {
+        if (!localStorage.getItem('redirected')) {
+          localStorage.setItem('redirected', 'true');
+          redirectToAuthCodeFlow(clientId, redirectUri);
         }
-      }).catch(error => console.error('Error getting access token:', error));
+      }
     }
-  }, []);
+  }, [setToken]);
 
   const getNowPlaying = () => {
-    if (!spotifyToken) {
+    if (!token) {
       console.error('No Spotify token available');
       return;
     }
@@ -145,7 +157,7 @@ const Spotify: React.FC = () => {
     }).catch(error => console.error('Error fetching playback state:', error));
   };
 
- return (
+  return (
     <div className='spotify'>
       <div className='spotify-content'>
         <SpotifyGetUser />
