@@ -198,6 +198,7 @@ const Spotify: React.FC = () => {
   return (
     <div className="spotify">
       <div className="spotify-content">
+        <button onClick={ () => localStorage.removeItem("spotify_access_token")}>Clear storage</button>
         <SpotifyGetUser />
         <div className="toggle-buttons">
           <button onClick={() => setShowTopArtists(!showTopArtists)}>
