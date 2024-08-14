@@ -85,7 +85,7 @@ const SpotifyTopTracks: React.FC = () => {
   return (
     <div className="top-artists-container">
       <h3>
-        <b>Top 50 Artists:</b>
+        <b>Top 50 Tracks:</b>
       </h3>
       {loading && <p>Loading...</p>}
       {error && <p>{error}</p>}

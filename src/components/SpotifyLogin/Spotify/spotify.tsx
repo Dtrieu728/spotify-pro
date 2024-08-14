@@ -5,6 +5,7 @@ import SpotifyGetUser from "../SpotifyProfile/spotifyProfile";
 import { useSpotify } from "./SpotifyContext";
 import SpotifyTopArtists from "../SpotifyTopArtist/TopArtist";
 import SpotifyTopTracks from "../SpotifyTopTracks/GetTopTracks";
+import SpotifyRecent from "../SpotifyRecent/getRecent";
 
 const spotifyApi = new SpotifyWebApi();
 const clientId = import.meta.env.VITE_SPOTIFY_ID;
@@ -77,7 +78,7 @@ const redirectToAuthCodeFlow = async (
 
   const state = "some_random_state"; // Generate a random state for CSRF protection
   const scope =
-    "user-read-playback-state user-read-currently-playing playlist-read-private user-top-read";
+    "user-read-playback-state user-read-currently-playing playlist-read-private user-top-read user-read-recently-played";
 
   const authUrl = `https://accounts.spotify.com/authorize?response_type=code&client_id=${clientId}&scope=${scope}&redirect_uri=${redirectUri}&state=${state}&code_challenge_method=S256&code_challenge=${codeChallenge}`;
   window.location.href = authUrl;
@@ -117,6 +118,7 @@ const Spotify: React.FC = () => {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
   const [showTopTracks, setShowTopTracks] = useState<boolean>(false);
   const [showTopArtists, setShowTopArtists] = useState<boolean>(false);
+  const [showRecent, setShowRecent] = useState<boolean>(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem("spotify_access_token");
@@ -207,11 +209,16 @@ const Spotify: React.FC = () => {
           <button onClick={() => setShowTopTracks(!showTopTracks)}>
             {showTopTracks ? "Hide Top Tracks" : "Show Top Tracks"}
           </button>
+          <button onClick={() => setShowRecent(!showRecent)}>
+            {showRecent ? "Hide Recent Tracks" : "Show Recent Tracks"}
+          </button>
         </div>
 
         {/* Conditional rendering of components */}
         {showTopArtists && <SpotifyTopArtists />}
         {showTopTracks && <SpotifyTopTracks />}
+        {showRecent && <SpotifyRecent/>}
+        
 
         <h1 style={{ margin: "20px" }}>
           <b>Playing Now:</b>
