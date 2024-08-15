@@ -200,7 +200,6 @@ const Spotify: React.FC = () => {
   return (
     <div className="spotify">
       <div className="spotify-content">
-        <button onClick={ () => localStorage.removeItem("spotify_access_token")}>Clear storage</button>
         <SpotifyGetUser />
         <div className="toggle-buttons">
           <button onClick={() => setShowTopArtists(!showTopArtists)}>
@@ -227,7 +226,10 @@ const Spotify: React.FC = () => {
           <a
             className="login"
             href="#"
-            onClick={() => redirectToAuthCodeFlow(clientId, redirectUri)}
+onClick={() => {
+    localStorage.removeItem("spotify_access_token");
+    redirectToAuthCodeFlow(clientId, redirectUri);
+}}
           >
             Login to Spotify
           </a>
