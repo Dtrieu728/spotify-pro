@@ -37,6 +37,8 @@ interface PlaybackState {
   } | null;
 }
 
+
+
 // Utility functions to handle OAuth2 flow
 const generateCodeVerifier = (): string => {
   const array = new Uint32Array(56 / 2);

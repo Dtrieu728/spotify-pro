@@ -1,44 +1,44 @@
-/* Root element */
+
 #root {
   background: rgb(113,34,195);
   background: linear-gradient(90deg, rgba(113,34,195,1) 0%, rgba(253,187,45,1) 100%);
   height: 100%;
 }
 
-/* Playlists container */
+
 .playlists-container {
   padding: 20px;
   font-family: Arial, sans-serif;
 }
 
-/* Heading */
+
 h2 {
   font-size: 24px;
   margin-bottom: 20px;
 }
 
-/* Button styling */
+
 button {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
   border: none;
-  background-color: #1db954; /* Spotify green */
+  background-color: #1db954;
   color: white;
   border-radius: 5px;
 }
 
 button:disabled {
-  background-color: #b3b3b3; /* Disabled button color */
+  background-color: #b3b3b3; 
   cursor: not-allowed;
 }
 
-/* Error and message styling */
+
 p {
   font-size: 16px;
 }
 
-/* Search bar styling */
+
 .searchbar {
   margin-bottom: 20px;
 }
@@ -60,18 +60,17 @@ p {
   padding: 10px 20px;
   font-size: 16px;
   border: none;
-  background-color: #1db954; /* Spotify green */
+  background-color: #1db954; 
   color: white;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .pagination button:disabled {
-  background-color: #b3b3b3; /* Disabled button color */
+  background-color: #b3b3b3; 
   cursor: not-allowed;
 }
 
-/* Playlist songs styling */
 .playlist-songs {
   margin-top: 20px;
 }
@@ -95,10 +94,35 @@ p {
   border-bottom: none;
 }
 
-.playlist-songs li span {
-  font-weight: bold;
+.track-card {
+  background-color: #ffffff;
+  border-radius: 8px;
+  padding: 10px;
+  margin-bottom: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 }
 
-.playlist-songs li small {
-  color: #555;
+.track-card img {
+  max-width: 100%;
+  border-radius: 4px;
+}
+
+.track-card h4 {
+  margin: 0;
+}
+
+.track-card p {
+  margin: 5px 0;
+  color: #666;
+}
+
+@media (max-width: 768px) {
+  .playlists-list {
+    grid-template-columns: 1fr;
+  }
+
+  .track-card {
+    padding: 5px;
+  }
 }

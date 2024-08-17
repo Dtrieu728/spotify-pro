@@ -1,5 +1,6 @@
-import React from "react";
-import "./SpotifyGetPlaylist.css";
+import React, { useState } from "react";
+import PlaylistSongs from "./PlaylistSongs";
+import '../CSS/Playlist.css'; 
 
 interface PlaylistItem {
   id: string;
@@ -8,17 +9,23 @@ interface PlaylistItem {
 
 interface PlaylistListProps {
   items: PlaylistItem[];
+  token: string;
 }
 
-const PlaylistList: React.FC<PlaylistListProps> = ({ items }) => {
+const PlaylistList: React.FC<PlaylistListProps> = ({ items, token }) => {
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
+
   return (
-    <ul className="playlists-list">
-      {items.map((item) => (
-        <li key={item.id}>
-          <button><span>{item.name}</span></button>
-        </li>
-      ))}
-    </ul>
+    <div>
+      <ul className="playlists-list">
+        {items.map(item => (
+          <li key={item.id} onClick={() => setSelectedPlaylist(item.id)}>
+            {item.name}
+          </li>
+        ))}
+      </ul>
+      {selectedPlaylist && <PlaylistSongs playlistId={selectedPlaylist} token={token} />}
+    </div>
   );
 };
 

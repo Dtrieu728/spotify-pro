@@ -3,7 +3,7 @@ import axios from "axios";
 import PlaylistList from "./Playlist";
 import SearchBar from "./Searchbar";
 import Pagination from "./Pagination";
-import "./SpotifyGetPlaylist.css";
+import './SpotifyGetPlaylist.css'; 
 
 interface PlaylistItem {
   id: string;
@@ -49,7 +49,7 @@ const SpotifyGetPlaylists: React.FC = () => {
         setHasMore(!!response.data.next);
       } catch (error) {
         setError("Failed to fetch playlists. Please try again.");
-        console.error(error);
+        console.error("Fetch error:", error);
       } finally {
         setLoading(false);
       }
@@ -69,7 +69,7 @@ const SpotifyGetPlaylists: React.FC = () => {
       </button>
       {error && <p>{error}</p>}
       {filteredPlaylists?.length ? (
-        <PlaylistList items={filteredPlaylists} />
+        <PlaylistList items={filteredPlaylists} token={token} />
       ) : (
         !loading && <p>No playlists found.</p>
       )}
