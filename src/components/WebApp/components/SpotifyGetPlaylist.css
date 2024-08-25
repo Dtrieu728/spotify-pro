@@ -1,7 +1,7 @@
 /* Root element */
 #root {
-  background: rgb(113,34,195);
-  background: linear-gradient(90deg, rgba(113,34,195,1) 0%, rgba(253,187,45,1) 100%);
+  background: rgb(182, 244, 146);
+  background: linear-gradient(to right, rgb(182, 244, 146), rgb(51, 139, 147));  
   height: 100%;
 }
 
